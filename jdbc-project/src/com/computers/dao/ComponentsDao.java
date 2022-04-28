@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.computers.dto.Components;
-import com.computers.dto.Warehouse;
 import com.computers.util.DataUtil;
 
 // 부품관련 데이터 처리
@@ -166,9 +165,26 @@ public class ComponentsDao {
 		}
 	}
 	
-	public int insert(Warehouse warehouse) {
-		String sql = "INSERT INTO components VALUES(SEQ_components,?,?,?,?,?)";
-		return 1;
+	public int insert(Connection con, Components comp) {
+		String sql = "INSERT INTO components VALUES(SEQ_components,?,?,?,sysdate,?)";
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = DataUtil.getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, comp.getType());
+			pstmt.setString(2, comp.getCname());
+			pstmt.setInt(3, comp.getPrice());
+			pstmt.setInt(4, comp.getCnt());
+			
+			int result = pstmt.executeUpdate();
+			return result;
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}finally {
+			DataUtil.close(pstmt);
+		}
 	}
 	
 
