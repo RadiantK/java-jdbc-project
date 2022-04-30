@@ -1,4 +1,4 @@
-package com.computers.dto;
+package com.computers.entity;
 
 import java.sql.Date;
 

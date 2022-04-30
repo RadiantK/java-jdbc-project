@@ -1,4 +1,4 @@
-package com.computers.dto;
+package com.computers.entity;
 
 import java.sql.Date;
 
@@ -7,6 +7,7 @@ public class ShippingInfo {
 	private int snum;
 	private String id;
 	private String cname;
+	private int pnum;
 	private String sname;
 	private String address;
 	private Date startDate;
@@ -15,11 +16,12 @@ public class ShippingInfo {
 	
 	public ShippingInfo() {}
 
-	public ShippingInfo(int snum, String id, String cname, String sname,
+	public ShippingInfo(int snum, String id, String cname, int pnum, String sname,
 			String address, Date startDate, Date endDate, String status) {
 		this.snum = snum;
 		this.id = id;
 		this.cname = cname;
+		this.pnum = pnum;
 		this.sname = sname;
 		this.address = address;
 		this.startDate = startDate;
@@ -49,6 +51,14 @@ public class ShippingInfo {
 
 	public void setCname(String cname) {
 		this.cname = cname;
+	}
+	
+	public int getPnum() {
+		return pnum;
+	}
+
+	public void setPnum(int pnum) {
+		this.pnum = pnum;
 	}
 
 	public String getSname() {
