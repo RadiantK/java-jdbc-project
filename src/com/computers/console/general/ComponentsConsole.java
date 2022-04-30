@@ -34,10 +34,8 @@ public class ComponentsConsole {
 						return;
 				}
 				
-			} catch (NumberFormatException e) {
+			} catch (NumberFormatException | IOException e) {
 				System.out.println("잘못된 형식 입니다.");
-			} catch (IOException e) {
-				System.out.println("입력에 오류가 있습니다.");
 			}
 		}
 	}
