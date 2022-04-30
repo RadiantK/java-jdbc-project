@@ -1,5 +1,7 @@
 package com.computers.entity;
 
+import java.sql.Date;
+
 public class Payment {
 	
 	private int pnum;
@@ -8,18 +10,20 @@ public class Payment {
 	private int cnt;
 	private int amount;
 	private String means;
+	private Date regDate;
 	private String status;
 	
 	public Payment() {}
 
 	public Payment(int pnum, String id, String cname, int cnt,
-			int amount, String means,String status) {
+			int amount, String means, Date regDate, String status) {
 		this.pnum = pnum;
 		this.id = id;
 		this.cname = cname;
 		this.cnt = cnt;
 		this.amount = amount;
 		this.means = means;
+		this.regDate = regDate;
 		this.status = status;
 	}
 
@@ -69,6 +73,14 @@ public class Payment {
 
 	public void setMeans(String means) {
 		this.means = means;
+	}
+
+	public Date getRegDate() {
+		return regDate;
+	}
+
+	public void setRegDate(Date regDate) {
+		this.regDate = regDate;
 	}
 
 	public String getStatus() {
