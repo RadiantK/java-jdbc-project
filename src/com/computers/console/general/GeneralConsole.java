@@ -45,12 +45,10 @@ public class GeneralConsole {
 						buyConsole.buyComponents(br, member);
 						break;
 					case 8:
-						break;
+						return;
 				}
-			}catch (NumberFormatException e) {
-				System.out.println("문자를 입력하실 수 없습니다.");
-			}catch (IOException e) {
-				System.out.println("잘못된 입력입니다.");
+			}catch (NumberFormatException | IOException e) {
+				System.out.println("잘못된 형식 입니다.");
 			}
 		}
 	}
