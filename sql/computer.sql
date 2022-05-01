@@ -17,7 +17,7 @@ ALTER TABLE member ADD
 CREATE TABLE components ( -- 부품정보
     cnum NUMBER(5) PRIMARY KEY, -- 부품번호
     type VARCHAR2(20) NOT NULL, -- 부품종류
-    cname VARCHAR2(80) NOT NULL UNIQUE, -- 부품이름
+    cname VARCHAR2(80) NOT NULL, -- 부품이름
     price NUMBER(10) NOT NULL, -- 가격
     regdate DATE DEFAULT SYSDATE, -- 부품입고일
     cnt NUMBER(5) NOT NULL -- 재고
@@ -26,7 +26,7 @@ CREATE TABLE components ( -- 부품정보
 CREATE TABLE payment ( -- 결제정보
     pnum NUMBER(5) PRIMARY KEY, -- 결제정보번호
     id VARCHAR2(20) REFERENCES member(id), -- 회원아이디
-    cname VARCHAR2(80) REFERENCES components(cname), -- 부품이름
+    cname VARCHAR2(80), -- REFERENCES components(cname) -- 부품이름
     cnt NUMBER(5) NOT NULL, -- 수량
     amount NUMBER(10) NOT NULL, -- 결제금액
     means VARCHAR2(10) NOT NULL, -- 결제수단
@@ -37,7 +37,7 @@ CREATE TABLE payment ( -- 결제정보
 CREATE TABLE shippinginfo ( -- 배송정보
     snum NUMBER(5) PRIMARY KEY, -- 배송번호
     id VARCHAR2(20) REFERENCES member(id), -- 주문아이디
-    cname VARCHAR2(80) REFERENCES components(cname), --부품이름
+    cname VARCHAR2(80), -- REFERENCES components(cname) --부품이름
     pnum NUMBER(5) REFERENCES Payment(pnum), -- 결제번호
     sname VARCHAR2(15) NOT NULL, -- 수신자이름
     address VARCHAR2(30) NOT NULL, -- 주소
