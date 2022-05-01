@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 import com.computers.config.Config;
+import com.computers.config.ConsoleConfig;
 import com.computers.console.admin.AdminConsole;
 import com.computers.console.general.GeneralConsole;
 import com.computers.entity.Member;
@@ -15,9 +16,10 @@ public class LoginConsole {
 
 	public void login(BufferedReader br) throws IOException {
 		Config config = Config.getInstance();
+		ConsoleConfig consoleConfig = ConsoleConfig.getInstance();
 		LoginService service = config.getLoginService();
-		AdminConsole adminConsole = config.getAdminConsole();
-		GeneralConsole generalConsole = config.getGeneralConsole();
+		AdminConsole adminConsole = consoleConfig.getAdminConsole();
+		GeneralConsole generalConsole = consoleConfig.getGeneralConsole();
 		loginMenu();
 		
 		while(true) {
@@ -35,11 +37,9 @@ public class LoginConsole {
 				
 				switch(member.getAuthority()) {
 					case "admin":
-						System.out.println("관리자계정으로 로그인합니다.");
 						adminConsole.adminFunction(br, member);
 						return;
 					case"general":
-						System.out.println("일반회원 입니다.");
 						generalConsole.generalFunction(br, member);
 						return;
 				}
