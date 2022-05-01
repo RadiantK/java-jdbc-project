@@ -5,12 +5,57 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.computers.entity.Member;
 import com.computers.util.DataUtil;
 
 public class MemberDao {
 
+	// 회원 전체 정보
+	public List<Member> memberList(int page, String type, String word) {
+		String sql = "SELECT * FROM ( "
+				+ "SELECT ROWNUM NUM, M.* FROM ( "
+				+ "SELECT * FROM MEMBER WHERE "+type+" LIKE ? "
+				+ "ORDER BY DECODE(id, 'admin', 1), ID) M) "
+				+ "WHERE NUM BETWEEN ? AND ?";
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<Member> list = new ArrayList<>();
+		
+		try {
+			con = DataUtil.getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, "%"+word+"%");
+			pstmt.setInt(2, 1 + (page -1) * 10);
+			pstmt.setInt(3, page * 10);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				String id = rs.getString("id");
+				String pwd = rs.getString("pwd");
+				String mname = rs.getString("mname");
+				String email = rs.getString("email");
+				String phone = rs.getString("phone");
+				Date regDate = rs.getDate("regdate");
+				int available = rs.getInt("available");
+				String authority = rs.getString("authority");
+				
+				Member member = new Member(
+					id, pwd, mname, email, phone, regDate, available, authority);
+				list.add(member);
+			}
+			return list;
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			DataUtil.close(con, pstmt, rs);
+		}
+	}
+	
 	// 아이디가 존재하는지 확인
 	public Member findById(String reqId) {
 		String sql = "SELECT * FROM member WHERE id = ?";
@@ -46,6 +91,7 @@ public class MemberDao {
 		return null;
 	}
 	
+	// 내 정보확인
 	public Member findByLoginId(String reqId) {
 		String sql = "SELECT * FROM member WHERE id = ? AND available = 1";
 		Connection con = null;
@@ -127,7 +173,8 @@ public class MemberDao {
 	
 	// 회원탈퇴
 	public int withdraw(Connection con, String id) {
-		String sql = "UPDATE member SET available = 0 WHERE id = ?";
+		String sql = "UPDATE member SET available = 0, regdate = sysdate "
+				+ "WHERE id = ?";
 		PreparedStatement pstmt = null;
 		
 		try {
@@ -177,11 +224,13 @@ public class MemberDao {
 	}
 	
 	// 계정 삭제(관리자용)
-	public int remove(Connection con, String id) {
+	public int remove(String id) {
 		String sql = "DELETE FROM member WHERE id = ?";
+		Connection con = null;
 		PreparedStatement pstmt = null;
 		
 		try {
+			con = DataUtil.getConnection();
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, id);
 			
@@ -191,7 +240,34 @@ public class MemberDao {
 			System.out.println("회원정보 제거중 오류가 발생했습니다.");
 			return -1;
 		}finally {
-			DataUtil.close(pstmt);
+			DataUtil.close(con, pstmt);
 		}
+	}
+
+	// 전체 회원 수
+	public int getCount(String type, String word) {
+		String sql = "SELECT COUNT(*) count FROM member WHERE "+type+" LIKE ?";
+		int count = 0;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = DataUtil.getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, "%"+word+"%");
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt("count");
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}finally {
+			DataUtil.close(con, pstmt, rs);
+		}
+		return count;
 	}
 }
