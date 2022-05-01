@@ -2,6 +2,7 @@ package com.computers.service;
 
 import java.sql.Connection;
 
+import com.computers.dao.BoardDao;
 import com.computers.dao.MemberDao;
 import com.computers.dao.PaymentDao;
 import com.computers.dao.ShippingInfoDao;
@@ -10,17 +11,22 @@ import com.computers.exception.RemoveDataException;
 import com.computers.exception.WrongIdPasswordException;
 import com.computers.util.DataUtil;
 
+/*
+ * 회원 전용 서비스
+ */
 public class MemberService {
 
 	private MemberDao memberDao;
 	private ShippingInfoDao shippingInfoDao;
 	private PaymentDao paymentDao;
+	private BoardDao boardDao;
 	
 	public MemberService(MemberDao memberDao, ShippingInfoDao shippingInfoDao,
-			PaymentDao paymentDao) {
+			PaymentDao paymentDao, BoardDao boardDao) {
 		this.memberDao = memberDao;
 		this.shippingInfoDao = shippingInfoDao;
 		this.paymentDao = paymentDao;
+		this.boardDao = boardDao;
 	}
 	
 	// 회원 정보 확인
@@ -36,18 +42,21 @@ public class MemberService {
 	// 비밀번호 변경
 	public void memberChangePassword(
 			Member currMember, String pwd, String confirmPwd) {
-		if(!isEqualsConfirmPassword(pwd, confirmPwd)) {
+		if(!isEqualsConfirmPassword(pwd, confirmPwd)) { // 비밀번호 일치확인
 			System.out.println("비밀번호가 일치하지 않습니다.");
 			return;
 		}
-		currMember.setPwd(pwd);
+		
+		currMember.setPwd(pwd); // 현재비밀번호를 변경할 비밀번호로 바꿈
 		Connection con = DataUtil.getConnection();
-		int n = memberDao.editPassword(con, currMember);
+		int n = memberDao.editPassword(con, currMember); // 비밀번호 수정
+		
 		if(n < 1) {
 			System.out.println("비밀번호 변경중 오류가 발생했습니다.");
 			DataUtil.rollback(con);
 			return;
 		}
+		
 		DataUtil.commit(con);
 		DataUtil.close(con);
 		System.out.println("비밀번호 변경 완료");
@@ -59,17 +68,8 @@ public class MemberService {
 		Connection con = DataUtil.getConnection();
 		
 		int n = 0;
-		boolean check = paymentDao.findPayment(con, id);
-		if(check) {
-			n = paymentDao.remove(con, id);
-			if (n < 1) {
-				DataUtil.rollback(con);
-				throw new RemoveDataException();
-			}
-		}
-		
-		check = shippingInfoDao.findShippingInfo(con, id);
-		if(check) {
+		boolean check = shippingInfoDao.findShippingInfo(con, id); // 배송정보확인
+		if(check) { // 배송정보가 존재하면 제거
 			n = shippingInfoDao.remove(con, id);
 			if (n < 1) {
 				DataUtil.rollback(con);
@@ -77,7 +77,25 @@ public class MemberService {
 			}
 		}
 		
-		n = memberDao.withdraw(con, id);
+		check = paymentDao.findPayment(con, id); // 결제정보 확인
+		if(check) { // 결제정보가 존재하면 제거
+			n = paymentDao.remove(con, id);
+			if (n < 1) {
+				DataUtil.rollback(con);
+				throw new RemoveDataException();
+			}
+		}
+		
+		check = boardDao.findBoard(con, id); // 게시물 정보확인
+		if(check) { // 게시물이 존재하면 제거
+			n = boardDao.remove(con, id);
+			if (n < 1) {
+				DataUtil.rollback(con);
+				throw new RemoveDataException();
+			}
+		}
+		
+		n = memberDao.withdraw(con, id); // 회원탈퇴
 		if (n < 1) {
 			DataUtil.rollback(con);
 			throw new RemoveDataException();
@@ -101,4 +119,5 @@ public class MemberService {
 	private boolean isEqualsConfirmPassword(String pwd, String confirmPwd) {
 		return pwd.equals(confirmPwd);
 	}
+	
 }
