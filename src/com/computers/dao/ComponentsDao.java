@@ -214,4 +214,25 @@ public class ComponentsDao {
 		return count;
 	}
 	
+	// 부품정보 제거
+	public int remove(int num) {
+		String sql = "DELETE FROM components WHERE cnum = ?";
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = DataUtil.getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			
+			int result = pstmt.executeUpdate();
+			return result;
+		}catch (SQLException e) {
+			System.out.println("회원정보 제거중 오류가 발생했습니다.");
+			return -1;
+		}finally {
+			DataUtil.close(con, pstmt);
+		}
+	}
+	
 }
