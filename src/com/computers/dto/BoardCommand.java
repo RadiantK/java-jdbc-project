@@ -1,5 +1,6 @@
 package com.computers.dto;
 
+// 게시판 수정을 위한 클래스
 public class BoardCommand {
 	
 	private int bnum;
