@@ -50,7 +50,7 @@ public class ComponentsService {
 			// 결재정보 삽입
 			PaymentRequest pay = new PaymentRequest(
 					member.getId(), comp.getCname(), c.getCnt(),
-					comp.getPrice(), c.getMenas());
+					comp.getPrice(), c.getMeans());
 			int n = paymentDao.insert(con, pay);
 			if(n < 1) {
 				System.out.println("결제정보를 등록하는 과정에서 오류가 발생했습니다.");
@@ -112,7 +112,7 @@ public class ComponentsService {
 		Connection con = DataUtil.getConnection();
 		boolean check = shippingInfoDao.checkInfo(con, pnum);
 		if(check) {
-			System.out.println("배송완료된 상품은 결제를 취소할 수 없습니다.");
+			System.out.println("배송중이거나 배송완료된 상품은 결제를 취소할 수 없습니다.");
 			DataUtil.rollback(con);
 			return false;
 		}
