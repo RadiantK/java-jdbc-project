@@ -1,27 +1,20 @@
 package com.computers.config;
 
-import com.computers.console.JoinConsole;
-import com.computers.console.LoginConsole;
-import com.computers.console.admin.AdminConsole;
-import com.computers.console.general.BuyComponentsConsole;
-import com.computers.console.general.ComponentsConsole;
-import com.computers.console.general.GeneralConsole;
 import com.computers.dao.BoardDao;
 import com.computers.dao.ComponentsDao;
 import com.computers.dao.MemberDao;
 import com.computers.dao.PaymentDao;
 import com.computers.dao.ShippingInfoDao;
-import com.computers.service.BuyComponentsService;
+import com.computers.service.AdminMemberService;
+import com.computers.service.AdminPayInfoService;
+import com.computers.service.BoardListService;
 import com.computers.service.ComponentsListService;
+import com.computers.service.ComponentsService;
 import com.computers.service.JoinService;
 import com.computers.service.LoginService;
 import com.computers.service.MemberService;
 
 public class Config {
-
-	private static Config getConfig() {
-		return config;
-	}
 	
 	private MemberDao memberDao;
 	private BoardDao boardDao;
@@ -33,14 +26,10 @@ public class Config {
 	private LoginService loginService;
 	private MemberService memberService;
 	private ComponentsListService componentsService;
-	private BuyComponentsService buyComponentsService;
-	
-	private LoginConsole loginColsole;
-	private JoinConsole joinConsole;
-	private AdminConsole adminConsole;
-	private GeneralConsole generalConsole;
-	private ComponentsConsole componentsConsole;
-	private BuyComponentsConsole buyComponentsConsole;
+	private ComponentsService buyComponentsService;
+	private BoardListService boardListService;
+	private AdminMemberService adminMemberService;
+	private AdminPayInfoService adminPayInfoService;
 	
 	private Config() {
 		memberDao = new MemberDao();
@@ -51,17 +40,16 @@ public class Config {
 		
 		joinService = new JoinService(memberDao);
 		loginService = new LoginService(memberDao);
-		memberService = new MemberService(memberDao, shippingInfoDao, paymentDao);
+		memberService = new MemberService(
+				memberDao, shippingInfoDao, paymentDao, boardDao);
 		componentsService = new ComponentsListService(componentsDao);
-		buyComponentsService = 
-				new BuyComponentsService(componentsDao, shippingInfoDao, paymentDao);
+		buyComponentsService = new ComponentsService(
+				componentsDao, shippingInfoDao, paymentDao);
+		boardListService = new BoardListService(boardDao);
+		adminMemberService = new AdminMemberService(memberDao);
+		adminPayInfoService = new AdminPayInfoService(
+				shippingInfoDao, paymentDao);
 		
-		loginColsole = new LoginConsole();
-		joinConsole = new JoinConsole();
-		adminConsole = new AdminConsole();
-		generalConsole = new GeneralConsole();
-		componentsConsole = new ComponentsConsole();
-		buyComponentsConsole = new BuyComponentsConsole();
 	}
 	
 	private static Config config = null;
@@ -78,28 +66,12 @@ public class Config {
 		return joinService;
 	}
 
-	public LoginConsole getLoginColsole() {
-		return loginColsole;
-	}
-
-	public JoinConsole getJoinConsole() {
-		return joinConsole;
-	}
-
 	public MemberDao getMemberDao() {
 		return memberDao;
 	}
 
 	public LoginService getLoginService() {
 		return loginService;
-	}
-
-	public AdminConsole getAdminConsole() {
-		return adminConsole;
-	}
-
-	public GeneralConsole getGeneralConsole() {
-		return generalConsole;
 	}
 
 	public MemberService getMemberService() {
@@ -122,20 +94,24 @@ public class Config {
 		return shippingInfoDao;
 	}
 
-	public ComponentsConsole getComponentsConsole() {
-		return componentsConsole;
-	}
-
 	public ComponentsListService getComponentsService() {
 		return componentsService;
 	}
 
-	public BuyComponentsConsole getBuyComponentsConsole() {
-		return buyComponentsConsole;
+	public ComponentsService getBuyComponentsService() {
+		return buyComponentsService;
 	}
 
-	public BuyComponentsService getBuyComponentsService() {
-		return buyComponentsService;
+	public BoardListService getBoardListService() {
+		return boardListService;
+	}
+
+	public AdminMemberService getAdminMemberService() {
+		return adminMemberService;
+	}
+
+	public AdminPayInfoService getAdminPayInfoService() {
+		return adminPayInfoService;
 	}
 	
 	
