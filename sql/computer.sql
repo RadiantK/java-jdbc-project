@@ -23,31 +23,34 @@ CREATE TABLE components ( -- 부품정보
     cnt NUMBER(5) NOT NULL -- 재고
 );
 
+CREATE TABLE payment ( -- 결제정보
+    pnum NUMBER(5) PRIMARY KEY, -- 결제정보번호
+    id VARCHAR2(20) REFERENCES member(id), -- 회원아이디
+    cname VARCHAR2(80) REFERENCES components(cname), -- 부품이름
+    cnt NUMBER(5) NOT NULL, -- 수량
+    amount NUMBER(10) NOT NULL, -- 결제금액
+    means VARCHAR2(10) NOT NULL, -- 결제수단
+    regdate DATE DEFAULT SYSDATE, -- 결재일
+    status VARCHAR2(15) -- 결재 상태
+);
+
 CREATE TABLE shippinginfo ( -- 배송정보
     snum NUMBER(5) PRIMARY KEY, -- 배송번호
     id VARCHAR2(20) REFERENCES member(id), -- 주문아이디
     cname VARCHAR2(80) REFERENCES components(cname), --부품이름
+    pnum NUMBER(5) REFERENCES Payment(pnum), -- 결제번호
     sname VARCHAR2(15) NOT NULL, -- 수신자이름
     address VARCHAR2(30) NOT NULL, -- 주소
     startdate DATE, -- 배송시작일
     enddate DATE, -- 배송도착일
-    status VARCHAR2(15) -- 배송상태
+    status VARCHAR2(20) -- 배송상태
 );
 
-CREATE TABLE payment ( -- 결재정보
-    pnum NUMBER(5) PRIMARY KEY, -- 결재정보번호
-    id VARCHAR2(20) REFERENCES member(id), -- 회원아이디
-    cname VARCHAR2(80) REFERENCES components(cname), -- 결재한상품
-    cnt NUMBER(5) NOT NULL, -- 수량
-    amount NUMBER(10) NOT NULL, -- 결재금액
-    means VARCHAR2(10) NOT NULL, -- 결재수단
-    status VARCHAR2(15)
-);
 
 CREATE TABLE board(
     bnum NUMBER(5) PRIMARY KEY, -- 게시물번호
     id VARCHAR2(20) REFERENCES member(id), -- 작성자아이디
-    title VARCHAR2(20) NOT NULL, -- 제목
+    title VARCHAR2(30) NOT NULL, -- 제목
     regdate DATE DEFAULT SYSDATE, -- 등록일
     content VARCHAR2(100) -- 내용
 );
@@ -57,3 +60,9 @@ CREATE SEQUENCE SEQ_shippinginfo;
 CREATE SEQUENCE SEQ_payment;
 CREATE SEQUENCE SEQ_BOARD;
 CREATE SEQUENCE SEQ_warehouse;
+
+ALTER TABLE shippinginfo ADD constraint ck_status 
+check(status in('배송대기', '배송중', '배송완료', '배송취소', '배송지연'));
+ALTER TABLE shippinginfo 
+
+DROP constraint ck_status;
