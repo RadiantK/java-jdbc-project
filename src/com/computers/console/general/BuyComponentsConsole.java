@@ -12,11 +12,11 @@ import com.computers.service.ComponentsService;
 
 public class BuyComponentsConsole {
 
-	public void buyComponents(BufferedReader br, Member member) {
-		
+	public void componentsSwitch(BufferedReader br, Member member) {
 		while(true) {
+			System.out.println("1.부품구매   2.결재정보 확인   3.배송정보 확인");
+			System.out.println("4.구매취소   5.돌아가기");
 			try {
-				System.out.println("1.부품구매 2.결재정보 확인 3.배송정보 확인 4.구매취소 5.돌아가기");
 				int menu = Integer.parseInt(br.readLine());
 				
 				switch(menu) {
@@ -43,7 +43,7 @@ public class BuyComponentsConsole {
 			
 		}
 	}
-
+	
 	// 부품 구매
 	private void buyComp(BufferedReader br, Member member) {
 		Config config = Config.getInstance();
@@ -67,7 +67,7 @@ public class BuyComponentsConsole {
 				String address = br.readLine();
 				System.out.println("결재수단을 선택해주세요.");
 				String means = br.readLine();
-				list.add(new CompRequest(cnum, cnt, address, means));
+				list.add(new CompRequest(cnum, cnt, means, address));
 				
 			}catch (NumberFormatException e) {
 				System.out.println("잘못된 형식 입니다.");
