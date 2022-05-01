@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.computers.config.Config;
+import com.computers.config.ConsoleConfig;
 import com.computers.console.JoinConsole;
 import com.computers.console.LoginConsole;
 
@@ -14,7 +14,7 @@ public class Main {
 			new BufferedReader(new InputStreamReader(System.in));
 	
 	public static void main(String[] args) {
-		Config config = Config.getInstance();
+		ConsoleConfig config = ConsoleConfig.getInstance();
 		LoginConsole loginConsole = config.getLoginColsole();
 		JoinConsole joinConsole = config.getJoinConsole();
 		try {
