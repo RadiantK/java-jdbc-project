@@ -16,14 +16,14 @@ public class ComponentsDao {
 	
 	public List<Components> allList() {
 	
-		return allList(1);
+		return allList(1, "type", "");
 	}
 	
 	// 부품 리스트
-	public List<Components> allList(int page) {
-		String sql = "SELECT * "
-				+ "FROM (SELECT ROWNUM NUM, C.* "
-				+ "FROM (SELECT * FROM components ORDER BY type) C) "
+	public List<Components> allList(int page, String reqtype, String word) {
+		String sql = "SELECT * FROM ( "
+				+ "SELECT ROWNUM NUM, C.* FROM "
+				+ "(SELECT * FROM components WHERE "+reqtype+" LIKE ? ORDER BY type) C) "
 				+ "WHERE NUM BETWEEN ? AND ?";
 		
 		Connection con = null;
@@ -34,8 +34,9 @@ public class ComponentsDao {
 		try {
 			con = DataUtil.getConnection();
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, 1 + (page - 1) * 10);
-			pstmt.setInt(2, page * 10);
+			pstmt.setString(1, "%"+word+"%");
+			pstmt.setInt(2, 1+(page-1)*10);
+			pstmt.setInt(3, page*10);
 			
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
@@ -60,23 +61,19 @@ public class ComponentsDao {
 	}
 	
 	// 부품 리스트
-	public Components findList(int page) {
-		String sql = "SELECT * FROM components WEHRE cnum = ?";
+	public Components findList(Connection con, int num) {
+		String sql = "SELECT * FROM components WHERE cnum = ?";
 		
-		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		Components comp = null;
 		
 		try {
-			con = DataUtil.getConnection();
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, 1 + (page - 1) * 10);
-			pstmt.setInt(1, page * 10);
+			pstmt.setInt(1, num);
 			
 			rs = pstmt.executeQuery();
 			
-			while(rs.next()) {
+			if(rs.next()) {
 				int cnum = rs.getInt("cnum");
 				String type = rs.getString("type");
 				String cname = rs.getString("cname");
@@ -84,28 +81,33 @@ public class ComponentsDao {
 				Date regDate = rs.getDate("regdate");
 				int cnt = rs.getInt("cnt");
 				
-				comp = new Components(cnum, type, cname, price, regDate, cnt);
+				Components comp = new Components(cnum, type, cname, price, regDate, cnt);
+				return comp;
 			}
-			return comp;
 		}catch (SQLException e) {
 			e.printStackTrace();
 			return null;
 		}finally {
-			DataUtil.close(con, pstmt, rs);
+			DataUtil.close(pstmt, rs);
 		}
+		return null;
 	}
 	
 	// 부품 삽입
-	public int insert(Connection con, Components comp) {
-		String sql = "INSERT INTO components VALUES(SEQ_components,?,?,?,sysdate,?)";
+	public int insert(Components comp, String date) {
+		String sql = "INSERT INTO components "
+				+ "VALUES(SEQ_components.nextval,?,?,?,?,?)";
+		Connection con = null;
 		PreparedStatement pstmt = null;
 		
 		try {
+			con = DataUtil.getConnection();
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, comp.getType());
 			pstmt.setString(2, comp.getCname());
 			pstmt.setInt(3, comp.getPrice());
-			pstmt.setInt(4, comp.getCnt());
+			pstmt.setString(4, date);
+			pstmt.setInt(5, comp.getCnt());
 			
 			int result = pstmt.executeUpdate();
 			return result;
@@ -113,7 +115,7 @@ public class ComponentsDao {
 			e.printStackTrace();
 			return -1;
 		}finally {
-			DataUtil.close(pstmt);
+			DataUtil.close(con, pstmt);
 		}
 	}
 	
@@ -124,8 +126,8 @@ public class ComponentsDao {
 		
 		try {
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, cnum);
-			pstmt.setInt(2, cnt);
+			pstmt.setInt(1, cnt);
+			pstmt.setInt(2, cnum);
 			
 			int result = pstmt.executeUpdate();
 			return result;
@@ -139,7 +141,7 @@ public class ComponentsDao {
 	
 	// 재고에서 수량 확인하기
 	public int check(Connection con, int cnum) {
-		String sql = "SELECT cnt FROM components WEHRE cnum = ?";
+		String sql = "SELECT cnt FROM components WHERE cnum = ?";
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
@@ -161,14 +163,15 @@ public class ComponentsDao {
 		}
 	}
 	
-	// 부품정보수정
-	public int update(Connection con, Components components) {
-		String sql = "UPDATE Components SET price = ?, cnt = ? regdate = SYSDATE "
+	// 부품정보수정(관리자용)
+	public int editComp(Components components) {
+		String sql = "UPDATE Components SET price = ?, cnt = ? "
 				+ "WHERE cnum = ?";
-		
+		Connection con = null;
 		PreparedStatement pstmt = null;
 		
 		try {
+			con = DataUtil.getConnection();
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, components.getPrice());
 			pstmt.setInt(2, components.getCnt());
@@ -180,13 +183,13 @@ public class ComponentsDao {
 			System.out.println("부품관련 수정중 에러가 발생했습니다.");
 			return -1;
 		}finally {
-			DataUtil.close(pstmt);
+			DataUtil.close(con, pstmt);
 		}
 	}
 	
 	// 전체 부품 갯수
-	public int getCount() {
-		String sql = "SELECT COUNT(*) count FROM components";
+	public int getCount(String type, String word) {
+		String sql = "SELECT COUNT(*) count FROM components WHERE "+type+" LIKE ?";
 		int count = 0;
 		
 		Connection con = null;
@@ -196,6 +199,7 @@ public class ComponentsDao {
 		try {
 			con = DataUtil.getConnection();
 			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, "%"+word+"%");
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
