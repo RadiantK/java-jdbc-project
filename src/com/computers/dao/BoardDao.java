@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.computers.dto.BoardRequest;
+import com.computers.dto.BoardCommand;
 import com.computers.entity.Board;
 import com.computers.util.DataUtil;
 
@@ -132,7 +132,7 @@ public class BoardDao {
 	}
 	
 	// 게시물 수정
-	public int editBoard(BoardRequest board) {
+	public int editBoard(BoardCommand board) {
 		String sql = "UPDATE board SET title = ?, content = ? WHERE bnum = ?";
 		Connection con = null;
 		PreparedStatement pstmt = null;
