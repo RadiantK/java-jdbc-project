@@ -1,16 +1,17 @@
 package com.computers.dto;
 
+// 부품 구매요청을 위한 클래스
 public class CompRequest {
 
 	private int cnum;
 	private int cnt;
-	private String menas;
+	private String means;
 	private String address;
 	
-	public CompRequest(int cnum, int cnt, String menas, String address) {
+	public CompRequest(int cnum, int cnt, String means, String address) {
 		this.cnum = cnum;
 		this.cnt = cnt;
-		this.menas = menas;
+		this.means = means;
 		this.address = address;
 	}
 	
@@ -21,8 +22,8 @@ public class CompRequest {
 		return cnt;
 	}
 
-	public String getMenas() {
-		return menas;
+	public String getMeans() {
+		return means;
 	}
 
 	public String getAddress() {
