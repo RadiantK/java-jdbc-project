@@ -19,7 +19,7 @@ GRANT CONNECT, RESOURCE, DBA TO temp;
 테이블 설정은 SQL폴더의 computer.sql 파일로 확인 가능하다.
 
 ## ER다이어그램
-![jdbc-project-erd](https://user-images.githubusercontent.com/95058915/166146836-c748cde2-4549-4bc0-a186-52c408d5eead.png)
+<img src="https://user-images.githubusercontent.com/95058915/166146836-c748cde2-4549-4bc0-a186-52c408d5eead.png"  width="600" height="500">
 
 ## 프로젝트 개요
 **관리자(admin)**
