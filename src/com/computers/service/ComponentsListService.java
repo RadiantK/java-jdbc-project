@@ -138,7 +138,23 @@ public class ComponentsListService {
 			}
 			System.out.println("제품이 수정되었습니다.");
 		} catch (NumberFormatException | IOException e) {
-			e.printStackTrace();
+			System.out.println("잘못된 양식의 입력입니다.");
+		}
+	}
+	
+	public void removeComponents(BufferedReader br) {
+		try {
+			System.out.println("제거할 부품의 번호를 입력해주세요.");
+			int num = Integer.parseInt(br.readLine());
+			
+			int n = componentsDao.remove(num);
+			if(n < 1) {
+				System.out.println("제품 제거에 실패했습니다. 제품번호를 다시 확인하세요.");
+				return;
+			}
+			System.out.println("제품이 제거되었습니다.");
+		}catch (NumberFormatException | IOException e) {
+			System.out.println("잘못된 양식의 입력입니다.");
 		}
 	}
 
