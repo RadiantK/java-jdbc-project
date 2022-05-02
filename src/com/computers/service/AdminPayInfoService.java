@@ -37,7 +37,7 @@ public class AdminPayInfoService {
 		System.out.printf("<< 전체 회원 목록 (총원 : %d) >>%n", count);
 		System.out.println("===================================================================================================================================================================================================================================");
 		for(PayInfoCommand p : list) {
-			System.out.printf("결재번호:%d | 회원아이디:%s | 부품이름:%s | 구매수량:%d | "
+			System.out.printf("결제번호:%d | 회원아이디:%s | 부품이름:%s | 구매수량:%d | "
 					+ "결제액:%d | 결제수단:%s | 결제상태:%s | 배송번호:%d | 구매자명:%s | "
 					+ "주소:%s | 배송시작일:%tF | 배송도착일:%tF | 배송상태:%s%n",
 					p.getPnum(), p.getId(), p.getCname(), p.getCnt(), p.getAmount(),
@@ -93,7 +93,7 @@ public class AdminPayInfoService {
 
 	public void editShippingInfo(BufferedReader br) {
 		try {
-			System.out.println("변경하실 결재 번호를 입력하세요.");
+			System.out.println("변경하실 결제 번호를 입력하세요.");
 			int num = Integer.parseInt(br.readLine());
 			System.out.println("변경하실 배송 상태를 입력하세요.");
 			System.out.println("배송상태는 [배송대기/배송중/배송완료/배송취소/배송지연] 사용가능");
