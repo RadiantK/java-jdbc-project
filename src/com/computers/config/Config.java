@@ -5,6 +5,7 @@ import com.computers.dao.ComponentsDao;
 import com.computers.dao.MemberDao;
 import com.computers.dao.PaymentDao;
 import com.computers.dao.ShippingInfoDao;
+import com.computers.service.AdminComponentsService;
 import com.computers.service.AdminMemberService;
 import com.computers.service.AdminPayInfoService;
 import com.computers.service.BoardListService;
@@ -30,6 +31,7 @@ public class Config {
 	private BoardListService boardListService;
 	private AdminMemberService adminMemberService;
 	private AdminPayInfoService adminPayInfoService;
+	private AdminComponentsService adminComponentsService;
 	
 	private Config() {
 		memberDao = new MemberDao();
@@ -49,6 +51,7 @@ public class Config {
 		adminMemberService = new AdminMemberService(memberDao);
 		adminPayInfoService = new AdminPayInfoService(
 				shippingInfoDao, paymentDao);
+		adminComponentsService = new AdminComponentsService(componentsDao);
 		
 	}
 	
@@ -112,6 +115,10 @@ public class Config {
 
 	public AdminPayInfoService getAdminPayInfoService() {
 		return adminPayInfoService;
+	}
+
+	public AdminComponentsService getAdminComponentsService() {
+		return adminComponentsService;
 	}
 	
 	
