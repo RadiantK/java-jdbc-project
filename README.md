@@ -29,7 +29,7 @@ GRANT CONNECT, RESOURCE, DBA TO temp;
 <br/>
 
 ## ER다이어그램
-<img src="https://user-images.githubusercontent.com/95058915/166146836-c748cde2-4549-4bc0-a186-52c408d5eead.png"  width="600" height="500">
+<img src="https://user-images.githubusercontent.com/95058915/166146836-c748cde2-4549-4bc0-a186-52c408d5eead.png" >
 
 ## 프로젝트 패키지 구성
 - **src폴더** : 도메인 네임처럼 com.computers의 하위의 패키지로 구성되어 있다. <br/>  
