@@ -4,13 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 import com.computers.config.Config;
-import com.computers.service.ComponentsListService;
+import com.computers.service.AdminComponentsService;
 
 public class AdminComponentsConsole {
 
 	public void ComponentsFunction(BufferedReader br) {
 		Config config = Config.getInstance();
-		ComponentsListService service = config.getComponentsService();
+		AdminComponentsService service = config.getAdminComponentsService();
 		
 		while(true) {
 			service.getComponentsList();
@@ -33,6 +33,9 @@ public class AdminComponentsConsole {
 						service.updateComponents(br);
 						break;
 					case 6:
+						service.removeComponents(br);
+						break;
+					case 7:
 						service.init();
 						System.out.println("이전으로 돌아갑니다.");
 						return;
