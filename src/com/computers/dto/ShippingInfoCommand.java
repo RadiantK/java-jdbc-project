@@ -1,5 +1,6 @@
 package com.computers.dto;
 
+// 관리자용 배송 정보를 수정할 때 사용할 클래스
 public class ShippingInfoCommand {
 
 	private int pnum;
