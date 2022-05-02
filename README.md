@@ -18,17 +18,18 @@ GRANT CONNECT, RESOURCE, DBA TO temp;
 
 테이블 설정은 SQL폴더의 computer.sql 파일로 확인 가능하다.
 
-## ER다이어그램
-<img src="https://user-images.githubusercontent.com/95058915/166146836-c748cde2-4549-4bc0-a186-52c408d5eead.png"  width="600" height="500">
-
 ## 프로젝트 개요
 **관리자(admin)**
 - 관리자는 전체 회원목록을 관리하고(회원과 탈퇴회원), 결제 정보및 배송 정보, 부품 목록과 건의사항 게시판의 게시물및 공지사항을 설정할 수 있다. 각 목록들은 보여지기 편하도록 10개씩 페이징 처리를 했고 검색기능을 구현했다.
 
-<br/>
 
 **일반사용자(general)**
 - 일반 사용자는 회원가입을 한뒤 서비스를 이용 가능하며 자신의 회원정보 조회, 회원정보 변경, 회원 탈퇴, 부품 목록 확인 및 부품 구매, 구매취소, 게시판의 기능을 사용 가능하다. 각 목록들은 보여지기 편하도록 10개씩 페이징 처리를 했고 검색기능을 구현했다.
+
+<br/>
+
+## ER다이어그램
+<img src="https://user-images.githubusercontent.com/95058915/166146836-c748cde2-4549-4bc0-a186-52c408d5eead.png"  width="600" height="500">
 
 ## 프로젝트 패키지 구성
 - **src폴더** : 도메인 네임처럼 com.computers의 하위의 패키지로 구성되어 있다. <br/>  
@@ -41,6 +42,7 @@ GRANT CONNECT, RESOURCE, DBA TO temp;
 7. **main** : 메인 클래스(콘솔 화면의 첫 페이지 담당)
 8. **service** : dao객체를 사용한 데이터 접근을 통해서 비지니스 로직을 처리한다.
 9. **util** : Database와의 연동할 때 사용되는 Connection의 공통 부분을 스태틱 메소드로 만들어서 사용하고 리소스를 닫아줄 때나 트랜잭션 처리(commit, rollback)의 예외처리를 하는것을 메소드로 따로 만들어서 처리했다.
+<br/>
 
 ## 사용한 외부 라이브러리
 - ojdbc8.jar
