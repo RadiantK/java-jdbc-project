@@ -38,7 +38,7 @@ public class BoardListService {
 		}
 		System.out.println("====================================================================================================================");
 		System.out.printf("                                                  %d / %d%n", page, lastPage);
-		System.out.println("              1.이전페이지   2.다음페이지   3.검색하기   4.상세보기   5.게시물 수정   6.게시물 삭제   7.돌아가기");
+		System.out.println("       1.이전페이지   2.다음페이지   3.검색하기   4.상세보기   5.게시물 수정   6.게시물 삭제   7.돌아가기");
 	}
 
 	public void prevPage() {
@@ -94,7 +94,7 @@ public class BoardListService {
 			}
 			
 			System.out.println("====================================================================================================================");
-			System.out.printf("게시물번호:%d | 작성자ID:%s | 제목:%s | 등록일:%tF%n 내용:%s%n",
+			System.out.printf(" 게시물번호:%d | 작성자ID:%s | 제목:%s | 등록일:%tF%n 내용:%s%n",
 				b.getBnum(), b.getId(), b.getTitle(), b.getRegDate(), b.getContent());
 			System.out.println("====================================================================================================================");
 			System.out.println("돌아가려면 아무키나 입력하세요.");
