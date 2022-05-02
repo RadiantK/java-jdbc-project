@@ -14,7 +14,7 @@ public class BuyComponentsConsole {
 
 	public void componentsSwitch(BufferedReader br, Member member) {
 		while(true) {
-			System.out.println("1.부품구매   2.결재정보 확인   3.배송정보 확인");
+			System.out.println("1.부품구매   2.결제정보 확인   3.배송정보 확인");
 			System.out.println("4.구매취소   5.돌아가기");
 			try {
 				int menu = Integer.parseInt(br.readLine());
@@ -49,6 +49,7 @@ public class BuyComponentsConsole {
 		Config config = Config.getInstance();
 		ComponentsService service = config.getBuyComponentsService();
 		List<CompRequest> list = new ArrayList<>();
+		
 		while(true) {
 			try {
 				System.out.println("부품을 구입하시겠습니까 ?(y / n)");
@@ -65,7 +66,7 @@ public class BuyComponentsConsole {
 				int cnt = Integer.parseInt(br.readLine());
 				System.out.println("배송받을 주소를 입력해주세요.");
 				String address = br.readLine();
-				System.out.println("결재수단을 선택해주세요.");
+				System.out.println("결제수단을 선택해주세요.");
 				String means = br.readLine();
 				list.add(new CompRequest(cnum, cnt, means, address));
 				
@@ -75,6 +76,7 @@ public class BuyComponentsConsole {
 				e.printStackTrace();
 			}
 		}
+		
 		int result = service.buyComponents(member, list);
 		if(result < 1) {
 			System.out.println("제품 구매에 실패했습니다.");
