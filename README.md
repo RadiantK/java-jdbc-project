@@ -7,15 +7,14 @@
 - ER다이어그램(MYSQL사용)
 
 ## ORACLE설정
+데이터베이스 사용자 생성
 ```sql
-
 ALTER SESSION SET “_oracle_script”=true; -- 생성할 사용자명에 C##을 붙이지 않기위해서 사용
 
 CREATE USER temp identified by temp;
 GRANT CONNECT, RESOURCE, DBA TO temp;
 ```
 <br/>
-
 테이블 설정은 SQL폴더의 computer.sql 파일로 확인 가능하다.
 
 ## 프로젝트 개요
