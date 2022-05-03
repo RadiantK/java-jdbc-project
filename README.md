@@ -8,6 +8,7 @@
 
 ## ORACLE설정
 데이터베이스 사용자 생성
+
 ```sql
 ALTER SESSION SET “_oracle_script”=true; -- 생성할 사용자명에 C##을 붙이지 않기위해서 사용
 
