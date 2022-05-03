@@ -38,7 +38,7 @@ public class BoardListService {
 		}
 		System.out.println("====================================================================================================================");
 		System.out.printf("                                                  %d / %d%n", page, lastPage);
-		System.out.println("       1.이전페이지   2.다음페이지   3.검색하기   4.상세보기   5.게시물 수정   6.게시물 삭제   7.돌아가기");
+		System.out.println("              1.이전페이지   2.다음페이지   3.검색하기   4.상세보기   5.게시물 생성   6.게시물 수정   7.게시물 삭제   8.돌아가기");
 	}
 
 	public void prevPage() {
@@ -104,6 +104,27 @@ public class BoardListService {
 		}
 	}
 
+	// 게시물생성
+	public void insertBoard(BufferedReader br, Member member) {
+		try {
+			System.out.println("건의하실 게시물의 제목을 입력하세요.");
+			String title = br.readLine();
+			System.out.println("게시물의 내용을 입력하세요.");
+			String content = br.readLine();
+			
+			BoardCommand command = new BoardCommand(0, member.getId(), title, content);
+			int n = boardDao.insert(command);
+			if(n < 1) {
+				System.out.println("[ 게시물 생성 실패 ]");
+				return;
+			}
+			System.out.println("[ 게시글이 생성되었습니다. ]");
+		} catch (IOException e) {
+			System.out.println("입력 양식이 올바르지 않습니다.");
+		}
+	}
+	
+	// 게시물 수정
 	public void updateBoard(BufferedReader br, Member member) {
 		try {
 			System.out.println("수정하실 게시물 번호를 입력하세요.");
@@ -125,11 +146,12 @@ public class BoardListService {
 			
 			System.out.println("수정하실 게시물의 내용을 입력하세요.");
 			String content = br.readLine();
-			BoardCommand reqBoard = new BoardCommand(num, reqTitle, content);
+			BoardCommand reqBoard = new BoardCommand(
+					num, member.getId(),reqTitle, content);
 			
 			int n = boardDao.editBoard(reqBoard);
 			if(n < 1) {
-				System.out.println("[ 수정실패 ]");
+				System.out.println("[ 게시물 수정실패 ]");
 				return;
 			}
 			System.out.println("[ 게시글이 수정되었습니다. ]");
@@ -138,6 +160,7 @@ public class BoardListService {
 		}
 	}
 
+	// 사용자 게시물 제거
 	public void removeBoard(BufferedReader br, Member member) {
 		try {
 			System.out.println("제거하실 게시물 번호를 입력하세요.");
@@ -164,6 +187,7 @@ public class BoardListService {
 		}
 	}
 	
+	// 관리자 게시물 제거
 	public void adminRemoveBoard(BufferedReader br) {
 		try {
 			System.out.println("제거하실 게시물 번호를 입력하세요.");
