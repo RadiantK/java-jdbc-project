@@ -59,6 +59,30 @@ public class BoardDao {
 		}
 	}
 	
+	// 게시물 생성
+	public int insert(BoardCommand board) {
+		String sql = "INSERT INTO BOARD(bnum, id, title, content) "
+				+ "VALUES(SEQ_board.nextval, ?, ?, ?)";
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = DataUtil.getConnection();
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, board.getId());
+			pstmt.setString(2, board.getTitle());
+			pstmt.setString(3, board.getContent());
+			
+			int result = pstmt.executeUpdate();
+			return result;
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}finally {
+			DataUtil.close(con, pstmt);
+		}
+	}
+	
 	// 게시물 상세정보
 	public Board detailBoard(int num){
 		String sql = "SELECT * FROM board WHERE bnum = ?";
@@ -151,27 +175,6 @@ public class BoardDao {
 			return -1;
 		}finally {
 			DataUtil.close(con, pstmt);
-		}
-	}
-	
-	// 게시물 삽입
-	public int insert(Connection con, Board board) {
-		String sql = "INSERT INTO board VALUES(SEQ_board, ?, ?, sysdate, ?)";
-		PreparedStatement pstmt = null;
-		
-		try {
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, board.getId());
-			pstmt.setString(2, board.getTitle());
-			pstmt.setString(3, board.getContent());
-			
-			int result = pstmt.executeUpdate();
-			return result;
-		} catch (SQLException e) {
-			System.out.println("게시물 생성 중 오류가 발생했습니다.");
-			return -1;
-		}finally {
-			DataUtil.close(pstmt);
 		}
 	}
 	
