@@ -31,12 +31,15 @@ public class AdminBoardConsole {
 						service.checkDetailBoard(br);
 						break;
 					case 5:
-						service.updateBoard(br, member);
+						service.insertBoard(br, member);
 						break;
 					case 6:
-						service.adminRemoveBoard(br);
+						service.updateBoard(br, member);
 						break;
 					case 7:
+						service.adminRemoveBoard(br);
+						break;
+					case 8:
 						service.init();
 						System.out.println("이전으로 돌아갑니다.");
 						return;
