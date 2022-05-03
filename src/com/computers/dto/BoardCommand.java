@@ -4,17 +4,25 @@ package com.computers.dto;
 public class BoardCommand {
 	
 	private int bnum;
+	private String id;
 	private String title;
 	private String content;
 	
-	public BoardCommand(int bnum, String title, String content) {
+	
+	public BoardCommand(int bnum, String id, String title, String content) {
+		super();
 		this.bnum = bnum;
+		this.id = id;
 		this.title = title;
 		this.content = content;
 	}
 
 	public int getBnum() {
 		return bnum;
+	}
+
+	public String getId() {
+		return id;
 	}
 
 	public String getTitle() {
