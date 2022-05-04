@@ -76,6 +76,7 @@ public class ComponentsListService {
 			type = temp;
 			System.out.println("검색 내용을 입력하세요.");
 			word = br.readLine();
+			page = 1;
 		} catch (NumberFormatException | IOException e) {
 			System.out.println("잘못된 양식으로 입력했습니다.");
 		}
@@ -87,7 +88,5 @@ public class ComponentsListService {
 		type = "type";
 		word = "";
 	}
-
-
 
 }
