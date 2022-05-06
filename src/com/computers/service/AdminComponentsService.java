@@ -37,8 +37,8 @@ public class AdminComponentsService {
 					c.getRegDate(), c.getCnt());
 		}
 		System.out.println("====================================================================================================================");
-		System.out.printf("                                                  %d / %d%n", page, lastPage);
-		System.out.println("                        1.이전페이지   2.다음페이지   3. 검색하기   4.부품추가   5.부품수정   6.부품제거   7.돌아가기");
+		System.out.printf("                                                       %d / %d%n", page, lastPage);
+		System.out.println("                              1.이전페이지   2.다음페이지   3. 검색하기   4.부품추가   5.부품수정   6.부품제거   7.돌아가기");
 	}
 
 	public void prevPage() {
